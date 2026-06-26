@@ -1,0 +1,27 @@
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
+
+CREATE TABLE public.professores (
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  nome text NOT NULL,
+  CONSTRAINT professores_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.disciplinas (
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  nome text NOT NULL,
+  CONSTRAINT disciplinas_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.alunos (
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  nome text NOT NULL,
+  CONSTRAINT alunos_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.notas (
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  aluno_id bigint,
+  disciplina_id bigint,
+  nota numeric,
+  CONSTRAINT notas_pkey PRIMARY KEY (id),
+  CONSTRAINT notas_aluno_id_fkey FOREIGN KEY (aluno_id) REFERENCES public.alunos(id),
+  CONSTRAINT notas_disciplina_id_fkey FOREIGN KEY (disciplina_id) REFERENCES public.disciplinas(id)
+);
