@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impacto da IA no Setor de Eletrônicos</title>
+  <meta name="description" content="Protótipo de site interativo sobre os impactos da Inteligência Artificial no setor de eletrônicos, com foco em consumo de RAM, pressão sobre hardware e inflação de preços." />
+  <style>
+    :root{
+      --bg:#081120;
+      --bg-soft:#0d1830;
+      --card:#101d39;
+      --card-2:#132448;
+      --line:rgba(255,255,255,.08);
+      --text:#eef4ff;
+      --muted:#aab8d3;
+      --primary:#5bb6ff;
+      --secondary:#7c5cff;
+      --accent:#00d4b8;
+      --danger:#ff7a7a;
+      --warning:#ffcc66;
+      --shadow:0 20px 50px rgba(0,0,0,.35);
+      --radius:22px;
+      --radius-sm:14px;
+      --max:1200px;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124,92,255,.18), transparent 35%),
+        radial-gradient(circle at top right, rgba(91,182,255,.14), transparent 32%),
+        linear-gradient(180deg, #07101e 0%, #0a1427 100%);
+      color:var(--text);
+      line-height:1.6;
+      overflow-x:hidden;
+    }
+
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .container{
+      width:min(92%, var(--max));
+      margin:0 auto;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.55rem .9rem;
+      border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.04);
+      border-radius:999px;
+      color:#dce8ff;
+      font-size:.88rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:.6rem;
+      padding:1rem 1.35rem;
+      border-radius:14px;
+      font-weight:700;
+      transition:.25s ease;
+      border:1px solid transparent;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg, var(--primary), var(--secondary));
+      color:#fff;
+      box-shadow:0 12px 30px rgba(91,182,255,.2);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 18px 36px rgba(91,182,255,.28);
+    }
+
+    .btn-outline{
+      border-color:rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      color:#e7f0ff;
+    }
+
+    .btn-outline:hover{
+      background:rgba(255,255,255,.07);
+      transform:translateY(-2px);
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(12px);
+      background:rgba(6,12,24,.72);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      min-height:78px;
+      gap:1rem;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:.9rem;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+
+    .brand-logo{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg, var(--secondary), var(--primary));
+      box-shadow:0 10px 25px rgba(124,92,255,.28);
+      font-size:1.15rem;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:1.2rem;
+      flex-wrap:wrap;
+    }
+
+    .nav-links a{
+      color:var(--muted);
+      font-weight:600;
+      font-size:.96rem;
+      transition:.2s ease;
+    }
+
+    .nav-links a:hover{
+      color:#fff;
+    }
+
+    .hero{
+      padding:86px 0 54px;
+      position:relative;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:34px;
+      align-items:center;
+    }
+
+    .hero h1{
+      font-size:clamp(2.3rem, 5vw, 4.5rem);
+      line-height:1.05;
+      margin:18px 0 16px;
+      letter-spacing:-1.8px;
+    }
+
+    .hero h1 span{
+      background:linear-gradient(135deg, #ffffff, #8bd1ff 45%, #84f2d4 90%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .hero p{
+      color:var(--muted);
+      font-size:1.08rem;
+      max-width:700px;
+      margin-bottom:24px;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:28px;
+    }
+
+    .hero-points{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:14px;
+      margin-top:20px;
+    }
+
+    .point{
+      padding:16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.07);
+      box-shadow:var(--shadow);
+    }
+
+    .point strong{
+      display:block;
+      font-size:1.15rem;
+      margin-bottom:6px;
+      color:#fff;
+    }
+
+    .point span{
+      color:var(--muted);
+      font-size:.93rem;
+    }
+
+    .hero-panel{
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:28px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .panel-glow{
+      position:absolute;
+      inset:auto -30px -60px auto;
+      width:180px;
+      height:180px;
+      background:radial-gradient(circle, rgba(91,182,255,.18), transparent 70%);
+      pointer-events:none;
+    }
+
+    .mini-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .mini-title{
+      font-weight:700;
+      color:#dbe7ff;
+    }
+
+    .dot-group{
+      display:flex;
+      gap:8px;
+    }
+
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:rgba(255,255,255,.25);
+    }
+
+    .dot:nth-child(1){background:#ff6d6d;}
+    .dot:nth-child(2){background:#ffcc66;}
+    .dot:nth-child(3){background:#62e58f;}
+
+    .dashboard{
+      display:grid;
+      gap:14px;
+    }
+
+    .dash-card{
+      background:linear-gradient(180deg, rgba(17,33,67,.9), rgba(12,24,49,.9));
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:18px;
+      padding:16px;
+    }
+
+    .dash-card h4{
+      margin-bottom:6px;
+      font-size:1rem;
+    }
+
+    .dash-card p{
+      color:var(--muted);
+      font-size:.92rem;
+      margin-bottom:12px;
+    }
+
+    .bars{
+      display:grid;
+      gap:10px;
+    }
+
+    .bar-line{
+      display:grid;
+      gap:6px;
+    }
+
+    .bar-line small{
+      color:#d9e6ff;
+      font-weight:600;
+    }
+
+    .track{
+      width:100%;
+      height:11px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      overflow:hidden;
+    }
+
+    .fill{
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .fill.green{
+      background:linear-gradient(90deg, var(--accent), #63ffd4);
+    }
+
+    .fill.red{
+      background:linear-gradient(90deg, #ff8a72, #ff5d8f);
+    }
+
+    section{
+      padding:36px 0;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:end;
+      gap:1rem;
+      margin-bottom:22px;
+    }
+
+    .section-head h2{
+      font-size:clamp(1.7rem, 3vw, 2.5rem);
+      letter-spacing:-1px;
+      margin-bottom:8px;
+    }
+
+    .section-head p{
+      color:var(--muted);
+      max-width:760px;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:var(--radius);
+      padding:26px;
+      box-shadow:var(--shadow);
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:20px;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:20px;
+    }
+
+    .grid-4{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:18px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(19,36,72,.92), rgba(11,22,43,.92));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      transition:.25s ease;
+    }
+
+    .card:hover{
+      transform:translateY(-4px);
+      border-color:rgba(91,182,255,.35);
+    }
+
+    .icon{
+      width:52px;
+      height:52px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      margin-bottom:16px;
+      font-size:1.3rem;
+      background:linear-gradient(135deg, rgba(91,182,255,.18), rgba(124,92,255,.18));
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .card h3{
+      margin-bottom:10px;
+      font-size:1.12rem;
+    }
+
+    .card p{
+      color:var(--muted);
+      font-size:.98rem;
+    }
+
+    .highlight-box{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+      margin-top:20px;
+    }
+
+    .metric{
+      padding:22px;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .metric .num{
+      font-size:2rem;
+      font-weight:800;
+      letter-spacing:-1px;
+      margin-bottom:8px;
+    }
+
+    .metric p{
+      color:var(--muted);
+    }
+
+    .timeline{
+      position:relative;
+      margin-top:10px;
+      display:grid;
+      gap:16px;
+    }
+
+    .timeline::before{
+      content:"";
+      position:absolute;
+      left:17px;
+      top:10px;
+      bottom:10px;
+      width:2px;
+      background:linear-gradient(180deg, rgba(91,182,255,.6), rgba(124,92,255,.15));
+    }
+
+    .step{
+      position:relative;
+      padding-left:54px;
+      background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding-top:18px;
+      padding-bottom:18px;
+      padding-right:18px;
+      margin-left:0;
+    }
+
+    .step::before{
+      content:"";
+      position:absolute;
+      left:10px;
+      top:20px;
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      background:linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow:0 0 0 6px rgba(91,182,255,.12);
+    }
+
+    .step h4{
+      margin-bottom:6px;
+      font-size:1.03rem;
+    }
+
+    .step p{
+      color:var(--muted);
+      font-size:.96rem;
+    }
+
+    .list{
+      display:grid;
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .list-item{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      padding:14px 16px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:16px;
+    }
+
+    .list-item .bullet{
+      width:28px;
+      height:28px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      background:rgba(0,212,184,.12);
+      color:#8ff5df;
+      font-weight:800;
+      flex-shrink:0;
+    }
+
+    .list-item p{
+      color:var(--muted);
+    }
+
+    .split{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:22px;
+    }
+
+    .chart-box{
+      padding:22px;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:22px;
+    }
+
+    .chart-box h3{
+      margin-bottom:8px;
+    }
+
+    .chart-box p{
+      color:var(--muted);
+      margin-bottom:18px;
+    }
+
+    .chart{
+      display:flex;
+      align-items:flex-end;
+      gap:16px;
+      height:220px;
+      padding:14px 8px 0;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      border-left:1px solid rgba(255,255,255,.08);
+      margin-bottom:14px;
+    }
+
+    .col{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+    }
+
+    .bar{
+      width:100%;
+      max-width:62px;
+      border-radius:14px 14px 6px 6px;
+      background:linear-gradient(180deg, var(--primary), var(--secondary));
+      box-shadow:0 10px 24px rgba(91,182,255,.18);
+    }
+
+    .bar.alt{
+      background:linear-gradient(180deg, #00d4b8, #2febb2);
+      box-shadow:0 10px 24px rgba(0,212,184,.18);
+    }
+
+    .bar.warn{
+      background:linear-gradient(180deg, #ffbf66, #ff8f5c);
+      box-shadow:0 10px 24px rgba(255,191,102,.18);
+    }
+
+    .col span{
+      color:var(--muted);
+      font-size:.9rem;
+      text-align:center;
+    }
+
+    .quote{
+      padding:26px;
+      border-radius:24px;
+      background:
+        linear-gradient(180deg, rgba(124,92,255,.15), rgba(91,182,255,.07)),
+        rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .quote p{
+      font-size:1.12rem;
+      color:#e9f1ff;
+      margin-bottom:12px;
+    }
+
+    .quote small{
+      color:var(--muted);
+    }
+
+    .cta{
+      padding:34px;
+      border-radius:28px;
+      background:
+        radial-gradient(circle at top right, rgba(0,212,184,.18), transparent 30%),
+        radial-gradient(circle at bottom left, rgba(124,92,255,.18), transparent 35%),
+        linear-gradient(135deg, #101b36, #0e1c3d);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+
+    .cta h2{
+      font-size:clamp(1.8rem, 3vw, 2.6rem);
+      margin-bottom:12px;
+      letter-spacing:-1px;
+    }
+
+    .cta p{
+      max-width:760px;
+      margin:0 auto 22px;
+      color:var(--muted);
+    }
+
+    footer{
+      padding:26px 0 44px;
+      color:var(--muted);
+      text-align:center;
+      font-size:.95rem;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition:all .55s ease;
+    }
+
+    .reveal.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @media (max-width: 1080px){
+      .hero-grid,
+      .split,
+      .grid-4{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .grid-3{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .hero-points{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 780px){
+      .nav{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:14px 0;
+      }
+
+      .nav-links{
+        gap:.9rem;
+      }
+
+      .hero{
+        padding-top:54px;
+      }
+
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .split,
+      .highlight-box{
+        grid-template-columns:1fr;
+      }
+
+      .section-head{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .chart{
+        gap:10px;
+      }
+
+      .bar{
+        max-width:48px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="brand-logo">⚡</div>
+        <div>
+          <div style="font-size:1rem;">IA & Eletrônicos</div>
+          <div style="font-size:.78rem; color:var(--muted); font-weight:600;">Protótipo de plataforma interativa</div>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#sobre">Sobre</a>
+        <a href="#impactos">Impactos</a>
+        <a href="#plataforma">Plataforma</a>
+        <a href="#metodologia">Metodologia</a>
+        <a href="#resultados">Resultados</a>
+        <a href="#solucoes">Soluções</a>
+        <a href="#conclusao">Conclusão</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <span class="tag">Protótipo conceitual • site interativo • análise tecnológica</span>
+          <h1>
+            O impacto da <span>Inteligência Artificial</span> sobre o setor de eletrônicos
+          </h1>
+          <p>
+            Este projeto propõe uma plataforma digital capaz de traduzir, de forma visual, crítica e acessível,
+            como a expansão da IA está remodelando o mercado de eletrônicos — elevando o consumo de memória RAM,
+            pressionando a infraestrutura computacional e influenciando o aumento de preços de componentes e equipamentos.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#plataforma">Explorar a proposta</a>
+            <a class="btn btn-outline" href="#impactos">Ver os impactos centrais</a>
+          </div>
+
+          <div class="hero-points">
+            <div class="point">
+              <strong>Memória RAM</strong>
+              <span>Maior demanda por processamento e execução de modelos complexos.</span>
+            </div>
+            <div class="point">
+              <strong>Infraestrutura</strong>
+              <span>Pressão crescente sobre servidores, GPUs, data centers e cadeia produtiva.</span>
+            </div>
+            <div class="point">
+              <strong>Inflação tecnológica</strong>
+              <span>Elevação de custos em peças, dispositivos e equipamentos especializados.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-panel reveal">
+          <div class="mini-top">
+            <div class="mini-title">Painel conceitual da plataforma</div>
+            <div class="dot-group">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+          </div>
+
+          <div class="dashboard">
+            <div class="dash-card">
+              <h4>Demanda computacional por aplicações de IA</h4>
+              <p>Representação visual de como diferentes usos de IA pressionam memória, processamento e energia.</p>
+              <div class="bars">
+                <div class="bar-line">
+                  <small>Chatbots e automação</small>
+                  <div class="track"><div class="fill" style="width: 56%;"></div></div>
+                </div>
+                <div class="bar-line">
+                  <small>Modelos generativos</small>
+                  <div class="track"><div class="fill red" style="width: 88%;"></div></div>
+                </div>
+                <div class="bar-line">
+                  <small>Análises preditivas em escala</small>
+                  <div class="track"><div class="fill green" style="width: 72%;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-card">
+              <h4>Eixos críticos monitorados</h4>
+              <p>O site articula tecnologia, economia e sustentabilidade em uma mesma leitura analítica.</p>
+              <div class="list">
+                <div class="list-item">
+                  <div class="bullet">1</div>
+                  <div>
+                    <strong>Uso intensivo de RAM</strong>
+                    <p>Correlação entre modelos avançados, memória disponível e exigência de desempenho.</p>
+                  </div>
+                </div>
+                <div class="list-item">
+                  <div class="bullet">2</div>
+                  <div>
+                    <strong>Pressão sobre hardware</strong>
+                    <p>Alta demanda por GPUs, servidores, refrigeração, energia e infraestrutura física.</p>
+                  </div>
+                </div>
+                <div class="list-item">
+                  <div class="bullet">3</div>
+                  <div>
+                    <strong>Custos e inflação</strong>
+                    <p>Impactos no preço final de peças, notebooks, workstations e sistemas empresariais.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-glow"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sobre">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="tag">Visão geral do projeto</span>
+            <h2>Uma proposta refinada, crítica e orientada à compreensão do problema</h2>
+          </div>
+          <p>
+            A Inteligência Artificial deixou de ser apenas uma inovação de software. Hoje, ela reorganiza cadeias de produção,
+            redefine prioridades do setor de tecnologia e desloca a demanda para componentes eletrônicos de alto desempenho.
+            O resultado é um cenário em que eficiência computacional, capacidade de memória e custo de infraestrutura se tornam temas centrais.
+          </p>
+        </div>
+
+        <div class="panel reveal">
+          <div class="grid-2">
+            <div>
+              <h3 style="margin-bottom:12px; font-size:1.25rem;">Síntese da proposta</h3>
+              <p style="color:var(--muted); margin-bottom:14px;">
+                O site foi concebido como uma plataforma de leitura estratégica sobre os efeitos da IA no setor de eletrônicos.
+                Em vez de apenas listar informações, a proposta organiza o conteúdo em uma narrativa visual que conecta demanda computacional,
+                infraestrutura física, pressão de mercado e consequências econômicas e ambientais.
+              </p>
+              <p style="color:var(--muted);">
+                O objetivo é transformar um tema técnico em uma experiência digital clara e sofisticada, oferecendo ao usuário
+                um ambiente capaz de informar, comparar, simular e contextualizar os impactos do avanço da IA.
+              </p>
+            </div>
+
+            <div class="highlight-box">
+              <div class="metric">
+                <div class="num counter" data-target="4">0</div>
+                <p>Eixos analíticos centrais da plataforma: memória, hardware, custos e sustentabilidade.</p>
+              </div>
+              <div class="metric">
+                <div class="num counter" data-target="9">0</div>
+                <p>Blocos principais de conteúdo para estruturar informação, navegação e experiência do usuário.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="impactos">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="tag">Impactos centrais</span>
+            <h2>Onde a expansão da IA mais pressiona o setor eletrônico</h2>
+          </div>
+          <p>
+            O crescimento da IA intensifica exigências técnicas que ultrapassam o software. A necessidade de treinar,
+            executar e escalar modelos robustos desencadeia impactos diretos no mercado de componentes, nos custos operacionais
+            e na lógica de atualização tecnológica.
+          </p>
+        </div>
+
+        <div class="grid-4">
+          <article class="card reveal">
+            <div class="icon">🧠</div>
+            <h3>Consumo elevado de memória RAM</h3>
+            <p>
+              Aplicações avançadas de IA exigem maior volume de memória para processar dados, manter contexto,
+              executar inferências e sustentar múltiplas operações simultâneas. Isso amplia a procura por módulos
+              mais rápidos, com maior capacidade e melhor estabilidade.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">🖥️</div>
+            <h3>Pressão sobre hardware especializado</h3>
+            <p>
+              A demanda por GPUs, servidores, placas de alto desempenho, refrigeração e armazenamento cresce em ritmo acelerado,
+              alterando o equilíbrio da cadeia de suprimentos e priorizando mercados que operam com maior poder de compra.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">💸</div>
+            <h3>Inflação de preços</h3>
+            <p>
+              À medida que os componentes mais eficientes se tornam estratégicos para IA, ocorre aumento de custos em peças,
+              notebooks, estações de trabalho e sistemas corporativos, dificultando o acesso a hardware competitivo.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">🌍</div>
+            <h3>Custos ambientais ocultos</h3>
+            <p>
+              O uso intensivo de infraestrutura tecnológica amplia gasto energético, ciclos de produção acelerados,
+              descarte eletrônico e pressão sobre matérias-primas, tornando a sustentabilidade uma variável crítica.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container split">
+        <div class="chart-box reveal">
+          <h3>Leitura visual da pressão sobre o setor</h3>
+          <p>
+            O gráfico abaixo representa, de forma conceitual, como a expansão da IA redistribui a pressão entre memória,
+            processamento, energia e custo final de equipamentos.
+          </p>
+
+          <div class="chart">
+            <div class="col">
+              <div class="bar" style="height: 64%;"></div>
+              <span>Uso de RAM</span>
+            </div>
+            <div class="col">
+              <div class="bar alt" style="height: 82%;"></div>
+              <span>Demanda por GPU</span>
+            </div>
+            <div class="col">
+              <div class="bar warn" style="height: 73%;"></div>
+              <span>Consumo energético</span>
+            </div>
+            <div class="col">
+              <div class="bar" style="height: 78%;"></div>
+              <span>Custo de infraestrutura</span>
+            </div>
+            <div class="col">
+              <div class="bar alt" style="height: 69%;"></div>
+              <span>Preço ao consumidor</span>
+            </div>
+          </div>
+
+          <p style="margin-top:10px; color:var(--muted);">
+            Em uma versão expandida do projeto, essa área poderá receber dashboards reais, filtros por tipo de componente,
+            comparações temporais e simuladores de cenários de mercado.
+          </p>
+        </div>
+
+        <div class="quote reveal">
+          <p>
+            “Mais do que uma transformação digital, a IA está se tornando uma força de reorganização material da tecnologia:
+            ela redefine o valor da memória, intensifica a disputa por capacidade computacional e altera o custo de entrada
+            no ecossistema eletrônico.”
+          </p>
+          <small>Trecho conceitual para posicionamento institucional do projeto</small>
+        </div>
+      </div>
+    </section>
+
+    <section id="plataforma">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="tag">Estrutura do site</span>
+            <h2>Como a plataforma foi pensada para funcionar</h2>
+          </div>
+          <p>
+            O protótipo foi desenhado como um ambiente híbrido entre portal informativo, painel analítico e ferramenta educativa.
+            A ideia é que o usuário não apenas leia conteúdo, mas navegue por relações de causa e efeito entre IA, eletrônicos e economia.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card reveal">
+            <div class="icon">📊</div>
+            <h3>Dashboards interativos</h3>
+            <p>
+              Painéis visuais para acompanhar a relação entre uso de IA, exigência de memória, pressão sobre hardware
+              e comportamento de custos no mercado eletrônico.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">🧮</div>
+            <h3>Simuladores de consumo</h3>
+            <p>
+              Ferramentas capazes de estimar uso de RAM, carga de processamento e custo operacional em diferentes cenários
+              de aplicação de IA, da automação básica a modelos generativos complexos.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">📚</div>
+            <h3>Camada educativa</h3>
+            <p>
+              Conteúdo explicativo voltado a estudantes, pesquisadores, profissionais e consumidores que precisam entender
+              a dimensão técnica, econômica e ambiental da corrida por infraestrutura computacional.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">🧩</div>
+            <h3>Comparadores por categoria</h3>
+            <p>
+              Espaços para comparar diferentes componentes, tipos de uso e níveis de demanda tecnológica, permitindo leitura mais estratégica do problema.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">🌱</div>
+            <h3>Indicadores de sustentabilidade</h3>
+            <p>
+              Blocos voltados a eficiência energética, extensão de ciclo de vida dos equipamentos e conscientização sobre descarte eletrônico.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">🧭</div>
+            <h3>Navegação orientada por decisão</h3>
+            <p>
+              Estrutura pensada para que o usuário identifique rapidamente o que deseja analisar: custo, desempenho, pressão de mercado ou impacto ambiental.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="metodologia">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="tag">Metodologia</span>
+            <h2>Etapas de construção da proposta</h2>
+          </div>
+          <p>
+            Para que o site tenha valor informativo e consistência analítica, o desenvolvimento precisa articular pesquisa,
+            organização de informação, experiência do usuário e validação técnica.
+          </p>
+        </div>
+
+        <div class="panel reveal">
+          <div class="timeline">
+            <div class="step">
+              <h4>1. Curadoria e refinamento do conteúdo</h4>
+              <p>
+                Levantamento de conceitos, organização dos eixos temáticos e reescrita do material em linguagem mais clara,
+                técnica e adequada à apresentação digital.
+              </p>
+            </div>
+
+            <div class="step">
+              <h4>2. Mapeamento dos fatores críticos</h4>
+              <p>
+                Identificação das relações entre IA, memória RAM, infraestrutura, consumo energético, disponibilidade de hardware e aumento de preços.
+              </p>
+            </div>
+
+            <div class="step">
+              <h4>3. Arquitetura da informação</h4>
+              <p>
+                Definição das seções, da hierarquia de leitura, da navegação e dos pontos de interação para transformar o tema em experiência de site.
+              </p>
+            </div>
+
+            <div class="step">
+              <h4>4. Prototipação visual</h4>
+              <p>
+                Criação de identidade, escolha de estilo visual, construção de dashboards conceituais, cards analíticos e blocos de destaque.
+              </p>
+            </div>
+
+            <div class="step">
+              <h4>5. Validação e evolução</h4>
+              <p>
+                Ajustes de clareza, acessibilidade, responsividade e possibilidade futura de integrar dados reais, filtros e novas camadas interativas.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="resultados">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="tag">Resultados esperados</span>
+            <h2>O que este site entrega como proposta</h2>
+          </div>
+          <p>
+            Mais do que uma apresentação estética, o projeto entrega uma base sólida para comunicar um problema contemporâneo
+            com profundidade, clareza e potencial de expansão.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card reveal">
+            <div class="icon">✅</div>
+            <h3>Valor informativo</h3>
+            <div class="list">
+              <div class="list-item">
+                <div class="bullet">•</div>
+                <div><p>Explica de forma mais madura como a IA modifica a demanda por componentes eletrônicos.</p></div>
+              </div>
+              <div class="list-item">
+                <div class="bullet">•</div>
+                <div><p>Conecta desempenho computacional, custo de hardware e implicações de mercado.</p></div>
+              </div>
+              <div class="list-item">
+                <div class="bullet">•</div>
+                <div><p>Organiza o tema em uma experiência visual mais convincente e acadêmica.</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card reveal">
+            <div class="icon">🚀</div>
+            <h3>Potencial de evolução</h3>
+            <div class="list">
+              <div class="list-item">
+                <div class="bullet">•</div>
+                <div><p>Permite incorporar gráficos dinâmicos e bases de dados reais em versões futuras.</p></div>
+              </div>
+              <div class="list-item">
+                <div class="bullet">•</div>
+                <div><p>Pode ser expandido para uso acadêmico, institucional ou apresentação de projeto.</p></div>
+              </div>
+              <div class="list-item">
+                <div class="bullet">•</div>
+                <div><p>Serve como base para debates sobre inovação, acessibilidade tecnológica e sustentabilidade.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NOVA SEÇÃO: SOLUÇÕES ===== -->
+    <section id="solucoes">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="tag">Possíveis soluções</span>
+            <h2>Como mitigar a inflação de peças e o consumo excessivo de RAM</h2>
+          </div>
+          <p>
+            Diante do cenário de pressão crescente sobre hardware e dos preços escalantes de componentes,
+            pesquisadores, empresas e governos vêm discutindo caminhos concretos para tornar a infraestrutura
+            de IA mais eficiente, acessível e sustentável.
+          </p>
+        </div>
+
+        <!-- Bloco de soluções em grid-3 -->
+        <div class="grid-3">
+          <article class="card reveal">
+            <div class="icon">🗜️</div>
+            <h3>Compressão e quantização de modelos</h3>
+            <p>
+              Técnicas como quantização (reduzir a precisão numérica dos pesos de um modelo de 32-bit para 8-bit ou 4-bit)
+              e pruning (remoção de neurônios pouco relevantes) permitem que modelos de IA rodem com significativamente
+              menos memória RAM, sem perda drástica de desempenho — reduzindo a pressão de demanda sobre módulos de memória.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">☁️</div>
+            <h3>Computação em nuvem e edge computing</h3>
+            <p>
+              Distribuir o processamento de IA entre servidores na nuvem e dispositivos de borda (edge) evita que cada
+              usuário final precise de hardware de ponta. Isso democratiza o acesso, reduz o ciclo de substituição de
+              equipamentos e alivia a demanda concentrada por componentes de alto custo.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">🔁</div>
+            <h3>Reutilização e mercado secundário</h3>
+            <p>
+              Incentivar o mercado de componentes recondicionados e a reutilização de hardware corporativo descartado
+              é uma resposta direta à escassez e ao encarecimento de peças novas. GPUs e módulos RAM de gerações
+              anteriores ainda têm capacidade suficiente para inúmeras aplicações de IA menos intensivas.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">🏭</div>
+            <h3>Diversificação da cadeia de produção</h3>
+            <p>
+              A concentração da fabricação de semicondutores em poucos países amplifica a volatilidade de preços.
+              Políticas industriais que incentivam a produção local ou regional de chips — como o CHIPS Act nos EUA
+              e iniciativas europeias similares — buscam reduzir essa dependência e estabilizar os custos ao longo do tempo.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">⚡</div>
+            <h3>Arquiteturas de IA mais eficientes</h3>
+            <p>
+              O desenvolvimento de arquiteturas de redes neurais projetadas desde o início para eficiência de memória
+              — como modelos esparsos, mixture-of-experts e redes neurais binárias — representa uma frente de pesquisa
+              promissora para reduzir o consumo de RAM sem sacrificar a capacidade dos modelos.
+            </p>
+          </article>
+
+          <article class="card reveal">
+            <div class="icon">📜</div>
+            <h3>Regulação e transparência de mercado</h3>
+            <p>
+              Regulações que exijam maior transparência nas cadeias de suprimentos de semicondutores, combate ao
+              acaparamento especulativo de componentes e normas de eficiência energética para data centers podem
+              atuar como freios na escalada de preços e incentivar práticas mais responsáveis no setor.
+            </p>
+          </article>
+        </div>
+
+        <!-- Painel de destaque: conclusão possível -->
+        <div class="panel reveal" style="margin-top:32px; position:relative; overflow:hidden;">
+          <div style="position:absolute; inset:auto -40px -80px auto; width:220px; height:220px;
+                      background:radial-gradient(circle, rgba(0,212,184,.14), transparent 70%); pointer-events:none;"></div>
+          <div class="grid-2">
+            <div>
+              <span class="tag" style="margin-bottom:16px; display:inline-flex;">💡 Perspectiva de saída</span>
+              <h3 style="font-size:1.3rem; margin-bottom:14px;">Uma possível conclusão para o problema</h3>
+              <p style="color:var(--muted); margin-bottom:14px;">
+                Não existe uma solução única para a inflação de peças e o consumo excessivo de memória RAM causados pela
+                expansão da IA. A saída mais realista é sistêmica: combinar eficiência técnica dos modelos com diversificação
+                produtiva e regulação de mercado.
+              </p>
+              <p style="color:var(--muted);">
+                À medida que a industria amadurece, modelos menores e mais eficientes tendem a coexistir com os gigantescos,
+                enquanto hardware de gerações anteriores encontra novo valor em aplicações especializadas. O caminho não é
+                frear a IA, mas tornar sua infraestrutura mais resiliente, distribuída e economicamente acessível.
+              </p>
+            </div>
+            <div style="display:grid; gap:14px; align-content:start;">
+              <div class="metric">
+                <div class="num" style="font-size:1.5rem; color:var(--accent);">↓ 4×</div>
+                <p>Redução de consumo de memória possível com quantização de modelos em 4-bit vs. precisão total.</p>
+              </div>
+              <div class="metric">
+                <div class="num" style="font-size:1.5rem; color:var(--primary);">+60%</div>
+                <p>Crescimento estimado do mercado de chips recondicionados até 2030, impulsionado pela demanda de IA de menor escala.</p>
+              </div>
+              <div class="metric">
+                <div class="num" style="font-size:1.5rem; color:var(--warning);">3 frentes</div>
+                <p>Técnica, industrial e regulatória — as três frentes que precisam avançar juntas para estabilizar o mercado.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ===== FIM DA NOVA SEÇÃO ===== -->
+
+    <section id="conclusao">
+      <div class="container">
+        <div class="cta reveal">
+          <h2>Conclusão</h2>
+          <p>
+            A Inteligência Artificial está ampliando fronteiras de inovação, mas também reposicionando o valor do hardware,
+            da memória e da infraestrutura eletrônica. Este site foi elaborado para apresentar essa discussão com mais profundidade,
+            transformando seu conteúdo em uma proposta visualmente forte, tecnicamente coerente e pronta para evoluir.
+          </p>
+          <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+            <a href="#sobre" class="btn btn-primary">Voltar ao início</a>
+            <a href="#plataforma" class="btn btn-outline">Revisar estrutura do site</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      Protótipo em HTML • Tema: impacto da IA no setor de eletrônicos • Texto refinado e estrutura elaborada
+    </div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach(el => revealObserver.observe(el));
+
+    const counters = document.querySelectorAll('.counter');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          const el = entry.target;
+          const target = +el.getAttribute('data-target');
+          let count = 0;
+          const speed = Math.max(18, Math.floor(120 / target));
+
+          const update = () => {
+            count += 1;
+            el.textContent = count;
+            if(count < target){
+              setTimeout(update, speed);
+            }
+          };
+
+          update();
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.7 });
+
+    counters.forEach(counter => counterObserver.observe(counter));
+  </script>
+
+</body>
+</html>
