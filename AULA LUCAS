@@ -1,0 +1,10 @@
+create table COPA_2026(
+id bigint generated always as identity unique,
+pais text
+pontuação int,
+artilheiro varchar(20)
+);
+--CHAVE PRIMARIA É --
+--CHAVE ESTRANGEIRA É QUANDO --
+--NO VARCHAR,VOCE DELIMITA A QUNATIDADE DE CARACTERES --
+-- DENTRO DELE, VOCE COLOCA O LIMITE DE CARACTERES --
